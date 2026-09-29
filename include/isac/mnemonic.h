@@ -1,7 +1,7 @@
 #ifndef HX_MNEMONIC_H
 #define HX_MNEMONIC_H
 
-#include "types.h"
+#include "isac/types.h"
 
 typedef enum {
 	HX_ADD,

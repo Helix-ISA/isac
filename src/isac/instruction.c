@@ -1,8 +1,8 @@
-#include "instruction.h"
+#include "isac/instruction.h"
 
-#include "mnemonic.h"
-#include "operand.h"
-#include "types.h"
+#include "isac/mnemonic.h"
+#include "isac/operand.h"
+#include "isac/types.h"
 
 #include <stdarg.h>
 #include <stddef.h>

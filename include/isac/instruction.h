@@ -1,9 +1,9 @@
 #ifndef HX_INSTRUCTION_H
 #define HX_INSTRUCTION_H
 
-#include "mnemonic.h"
-#include "operand.h"
-#include "types.h"
+#include "isac/mnemonic.h"
+#include "isac/operand.h"
+#include "isac/types.h"
 
 typedef struct hx_instruction hx_instruction;
 

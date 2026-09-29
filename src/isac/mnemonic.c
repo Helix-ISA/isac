@@ -1,4 +1,4 @@
-#include "mnemonic.h"
+#include "isac/mnemonic.h"
 #include <string.h>
 
 hx_mnemonic get_mnemonic(const char *string)
