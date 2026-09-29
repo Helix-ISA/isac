@@ -21,18 +21,18 @@ package() {
     install -Dm755 bin/isac.so \
         "$pkgdir/usr/lib/isac.so"
 
-    install -Dm644 include/operand.h \
+    install -Dm644 include/isac/operand.h \
         "$pkgdir/usr/include/isac/operand.h"
 
-    install -Dm644 include/mnemonic.h \
+    install -Dm644 include/isac/mnemonic.h \
         "$pkgdir/usr/include/isac/mnemonic.h"
 
-    install -Dm644 include/instruction.h \
+    install -Dm644 include/isac/instruction.h \
         "$pkgdir/usr/include/isac/instruction.h"
 
-    install -Dm644 include/format.h \
+    install -Dm644 include/isac/format.h \
         "$pkgdir/usr/include/isac/format.h"
 
-    install -Dm644 include/types.h \
+    install -Dm644 include/isac/types.h \
         "$pkgdir/usr/include/isac/types.h"
 }
