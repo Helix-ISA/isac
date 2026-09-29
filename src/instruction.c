@@ -16,16 +16,6 @@ struct hx_operand {
 	union {
 		u8 reg;
 		u64 imm;
-
-		struct {
-			u8 reg;
-			u64 offset;
-		} memory;
-
-		struct {
-			const char *text;
-			u32 text_length;
-		} label;
 	} value;
 };
 
@@ -110,16 +100,6 @@ void *instruction_get_operand(const hx_instruction *instruction, u8 position, hx
 	union out {
 		u8 reg;
 		u64 imm;
-
-		struct {
-			u8 reg;
-			u64 offset;
-		} memory;
-
-		struct {
-			const char *text;
-			u32 text_length;
-		} label;
 	};
 
 	union out *p = malloc(sizeof(*p));
@@ -133,16 +113,6 @@ void *instruction_get_operand(const hx_instruction *instruction, u8 position, hx
 		
 		case HX_IMMEDIATE:
 			p->imm = instruction->operands[position].value.imm;
-			return p;
-
-		case HX_MEMORY:
-			p->memory.reg = instruction->operands[position].value.memory.reg;
-			p->memory.offset = instruction->operands[position].value.memory.offset;
-			return p;
-
-		case HX_LABEL:
-			p->label.text = instruction->operands[position].value.label.text;
-			p->label.text_length = instruction->operands[position].value.label.text_length;
 			return p;
 
 		default:

@@ -9,16 +9,6 @@ struct hx_operand {
 	union {
 		u8 reg;
 		u64 imm;
-
-		struct {
-			u8 reg;
-			u64 offset;
-		} memory;
-
-		struct {
-			const char *text;
-			u32 text_length;
-		} label;
 	} value;
 };
 
@@ -40,30 +30,6 @@ b8 operand_create_immediate(hx_operand *operand, u64 imm)
 
 	operand->type = HX_IMMEDIATE;
 	operand->value.imm = imm;
-
-	return success;
-}
-
-b8 operand_create_memory(hx_operand *operand, u8 reg, u64 imm)
-{
-	if (operand == NULL)
-		return failure;
-
-	operand->type = HX_MEMORY;
-	operand->value.memory.reg = reg;
-	operand->value.memory.offset = imm;
-
-	return success;
-}
-
-b8 operand_create_label(hx_operand *operand, const char *text, u32 text_length)
-{
-	if (operand == NULL)
-		return failure;
-
-	operand->type = HX_LABEL;
-	operand->value.label.text = text;
-	operand->value.label.text_length = text_length;
 
 	return success;
 }
