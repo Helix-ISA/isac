@@ -6,7 +6,7 @@ CompileFlags:
     - -Wpedantic
     - -I/home/alex/Helix-ISA/isac/include
 
-Diagonstics:
+Diagnostics:
   UnusedIncludes: Strict
 
 Index:
