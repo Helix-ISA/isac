@@ -1,6 +1,6 @@
 pkgname=isac
 pkgver=0.1.0
-pkgrel=3
+pkgrel=4
 pkgdesc="ISA C headers"
 arch=('x86_64')
 license=('MIT')
@@ -19,7 +19,7 @@ package() {
     cd "$srcdir/isac-master"
 
     install -Dm755 bin/isac.so \
-        "$pkgdir/usr/lib/isac.so"
+        "$pkgdir/usr/lib/libisac.so"
 
     install -Dm644 include/isac/operand.h \
         "$pkgdir/usr/include/isac/operand.h"
