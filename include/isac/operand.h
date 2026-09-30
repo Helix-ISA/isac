@@ -12,8 +12,8 @@ typedef enum {
 
 typedef struct hx_operand hx_operand;
 
-HAPI b8 operand_create_register(hx_operand *operand, u8 reg);
-HAPI b8 operand_create_immediate(hx_operand *operand, u64 imm);
+HAPI hx_operand *operand_create_register(u8 reg);
+HAPI hx_operand *operand_create_immediate(u64 imm);
 
 HAPI hx_operand_type operand_get_type(const hx_operand *operand);
 

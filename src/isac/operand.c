@@ -2,6 +2,7 @@
 #include "isac/types.h"
 
 #include <stddef.h>
+#include <stdlib.h>
 
 struct hx_operand {
 	hx_operand_type type;
@@ -12,26 +13,28 @@ struct hx_operand {
 	} value;
 };
 
-b8 operand_create_register(hx_operand *operand, u8 reg)
+hx_operand *operand_create_register(u8 reg)
 {
+	hx_operand *operand = malloc(sizeof(hx_operand));
 	if (operand == NULL)
-		return failure;
+		return NULL;
 
 	operand->type = HX_REGISTER;
 	operand->value.reg = reg;
 
-	return success;
+	return operand;
 }
 
-b8 operand_create_immediate(hx_operand *operand, u64 imm)
+hx_operand *operand_create_immediate(u64 imm)
 {
+	hx_operand *operand = malloc(sizeof(hx_operand));
 	if (operand == NULL)
-		return failure;
+		return NULL;
 
 	operand->type = HX_IMMEDIATE;
 	operand->value.imm = imm;
 
-	return success;
+	return operand;
 }
 
 HAPI hx_operand_type operand_get_type(const hx_operand *operand)
