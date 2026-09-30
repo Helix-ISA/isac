@@ -8,6 +8,7 @@
 typedef struct hx_instruction hx_instruction;
 
 HAPI hx_instruction *instruction_create(hx_mnemonic mnemonic, u32 line, u32 operand_count, ...);
+HAPI void instruction_free(hx_instruction *instruction);
 
 HAPI hx_mnemonic instruction_mnemonic(const hx_instruction *instruction);
 HAPI u8 instruction_operand_count(const hx_instruction *instruction);

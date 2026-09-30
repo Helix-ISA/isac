@@ -16,6 +16,17 @@ struct hx_operand {
 	union {
 		u8 reg;
 		u64 imm;
+
+		struct {
+			u8 reg;
+			u64 offset;
+		} memory;
+		
+		struct {
+			const char *name;
+			u32 name_length;
+			u64 address;
+		} symbol;
 	} value;
 };
 
@@ -60,6 +71,15 @@ hx_instruction *instruction_create(hx_mnemonic mnemonic, u32 line, u32 operand_c
 	return instruction;
 }
 
+void instruiction_free(hx_instruction *instruction)
+{
+	for (u8 i = 0; i < instruction->operand_count; i++) {
+		operand_free(&instruction->operands[i]);
+	}
+
+	free(instruction);
+}
+
 hx_mnemonic instruction_mnemonic(const hx_instruction *instruction)
 {
 	if (instruction == NULL)
@@ -101,6 +121,17 @@ void *instruction_get_operand(const hx_instruction *instruction, u8 position, hx
 	union out {
 		u8 reg;
 		u64 imm;
+
+		struct {
+			u8 reg;
+			u64 offset;
+		} memory;
+		
+		struct {
+			const char *name;
+			u32 name_length;
+			u64 address;
+		} symbol;
 	};
 
 	union out *p = malloc(sizeof(*p));
@@ -114,6 +145,16 @@ void *instruction_get_operand(const hx_instruction *instruction, u8 position, hx
 		
 		case HX_IMMEDIATE:
 			p->imm = instruction->operands[position].value.imm;
+			return p;
+
+		case HX_MEMORY:
+			p->memory.reg = instruction->operands[position].value.memory.reg;
+			p->memory.offset = instruction->operands[position].value.memory.offset;
+			return p;
+
+		case HX_SYMBOL:
+			p->symbol.name = instruction->operands[position].value.symbol.name;
+			p->symbol.name_length = instruction->operands[position].value.symbol.name_length;
 			return p;
 
 		default:

@@ -6,6 +6,8 @@
 typedef enum {
 	HX_REGISTER,
 	HX_IMMEDIATE,
+	HX_MEMORY,
+	HX_SYMBOL,
 
 	HX_OPERAND_UNKNOWN
 } hx_operand_type;
@@ -14,6 +16,10 @@ typedef struct hx_operand hx_operand;
 
 HAPI hx_operand *operand_create_register(u8 reg);
 HAPI hx_operand *operand_create_immediate(u64 imm);
+HAPI hx_operand *operand_create_memory(u8 reg, u64 offset);
+HAPI hx_operand *operand_create_symbol(const char *symbol_name, u32 symbol_name_length);
+
+HAPI void operand_free(hx_operand *operand);
 
 HAPI hx_operand_type operand_get_type(const hx_operand *operand);
 

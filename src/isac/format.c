@@ -10,6 +10,17 @@
 union operand {
 	u8 reg;
 	u64 imm;
+
+	struct {
+		u8 reg;
+		u64 offset;
+	} memory;
+	
+	struct {
+		const char *name;
+		u32 name_length;
+		u64 address;
+	} symbol;
 };
 
 u32 format_r_encode(const hx_instruction *instruction)
@@ -44,12 +55,51 @@ u32 format_r_encode(const hx_instruction *instruction)
 	return encoded;
 }
 
+u32 static encode_load(const hx_instruction *instruction)
+{
+	hx_mnemonic mnemonic = instruction_mnemonic(instruction);
+
+	union operand *rd = instruction_get_operand(instruction, 0, HX_REGISTER);
+	union operand *mem = instruction_get_operand(instruction, 1, HX_MEMORY);
+
+	if (rd == NULL || mem == NULL) {
+		free(rd);
+		free(mem);
+		return -1;
+	}
+
+	u32 encoded = get_opcode(mnemonic) |
+		((get_function(mnemonic) << 7) & 0x07) |
+		((rd->reg << 10) & 0x1F) |
+		((mem->memory.reg << 15) & 0x1F) |
+		((mem->memory.offset << 20) & 0x0FFF);
+
+	free(rd);
+	free(mem);
+
+	return encoded;
+}
+
 u32 format_i_encode(const hx_instruction *instruction)
 {
 	if (instruction == NULL)
 		return -1;
 	
 	hx_mnemonic mnemonic = instruction_mnemonic(instruction);
+
+	switch (mnemonic) {
+		case HX_LB:
+		case HX_LQ:
+		case HX_LH:
+		case HX_LW:
+		case HX_LBU:
+		case HX_LQU:
+		case HX_LHU:
+			return encode_load(instruction);
+
+		default:
+			break;
+	}
 
 	union operand *rd = instruction_get_operand(instruction, 0, HX_REGISTER);
 	union operand *rs1 = instruction_get_operand(instruction, 1, HX_REGISTER);
@@ -82,26 +132,23 @@ u32 format_s_encode(const hx_instruction *instruction)
 	
 	hx_mnemonic mnemonic = instruction_mnemonic(instruction);
 
-	union operand *rs2 = instruction_get_operand(instruction, 0, HX_REGISTER);
-	union operand *rs1 = instruction_get_operand(instruction, 1, HX_REGISTER);
-	union operand *imm = instruction_get_operand(instruction, 2, HX_IMMEDIATE);
+	union operand *mem = instruction_get_operand(instruction, 0, HX_MEMORY);
+	union operand *rs2 = instruction_get_operand(instruction, 1, HX_REGISTER);
 
-	if (rs2 == NULL || rs1 == NULL || imm == NULL) {
+	if (mem == NULL || rs2 == NULL) {
+		free(mem);
 		free(rs2);
-		free(rs1);
-		free(imm);
 		return -1;
 	}
 
 	u32 encoded = get_opcode(mnemonic) |
 		((get_function(mnemonic) << 7) & 0x07) |
 		((rs2->reg << 10) & 0x1F) |
-		((rs1->reg<< 15) & 0x1F) |
-		((imm->imm << 20) & 0x0FFF);
+		((mem->memory.reg << 15) & 0x1F) |
+		((mem->memory.offset << 20) & 0x0FFF);
 
 	free(rs2);
-	free(rs1);
-	free(imm);
+	free(rs2);
 
 	return encoded;
 }
@@ -115,12 +162,12 @@ u32 format_b_encode(const hx_instruction *instruction)
 
 	union operand *rs2 = instruction_get_operand(instruction, 0, HX_REGISTER);
 	union operand *rs1 = instruction_get_operand(instruction, 1, HX_REGISTER);
-	union operand *imm = instruction_get_operand(instruction, 2, HX_IMMEDIATE);
+	union operand *symbol = instruction_get_operand(instruction, 2, HX_SYMBOL);
 
-	if (rs2 == NULL || rs1 == NULL || imm == NULL) {
+	if (rs2 == NULL || rs1 == NULL || symbol == NULL) {
 		free(rs2);
 		free(rs1);
-		free(imm);
+		free(symbol);
 		return -1;
 	}
 
@@ -128,11 +175,11 @@ u32 format_b_encode(const hx_instruction *instruction)
 		((get_function(mnemonic) << 7) & 0x07) |
 		((rs2->reg << 10) & 0x1F) |
 		((rs1->reg<< 15) & 0x1F) |
-		(((imm->imm >> 2) << 20) & 0x0FFF); // Divide by 4, store larger addresses
+		(((symbol->symbol.address >> 2) << 20) & 0x0FFF); // Divide by 4, store larger addresses
 
 	free(rs2);
 	free(rs1);
-	free(imm);
+	free(symbol);
 
 	return encoded;
 }
@@ -145,21 +192,21 @@ u32 format_j_encode(const hx_instruction *instruction)
 	hx_mnemonic mnemonic = instruction_mnemonic(instruction);
 
 	union operand *rd = instruction_get_operand(instruction, 0, HX_REGISTER);
-	union operand *imm = instruction_get_operand(instruction, 1, HX_IMMEDIATE);
+	union operand *symbol = instruction_get_operand(instruction, 1, HX_SYMBOL);
 
-	if (rd == NULL || imm == NULL) {
+	if (rd == NULL || symbol == NULL) {
 		free(rd);
-		free(imm);
+		free(symbol);
 		return -1;
 	}
 
 	u32 encoded = get_opcode(mnemonic) |
 		((get_function(mnemonic) << 7) & 0x07) |
 		((rd->reg<< 10) & 0x1F) |
-		(((imm->imm >> 2) << 15) & 0x1FFFF); // Divide by 4, store larger addresses
+		(((symbol->symbol.address >> 2) << 15) & 0x1FFFF); // Divide by 4, store larger addresses
 
 	free(rd);
-	free(imm);
+	free(symbol);
 
 	return encoded;
 }
