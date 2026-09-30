@@ -1,87 +1,90 @@
 #include "isac/mnemonic.h"
 #include <string.h>
 
-hx_mnemonic get_mnemonic(const char *string)
+#define MATCH(s) \
+	(string_length == sizeof(s) - 1 && strncmp(string, s, string_length) == 0)
+
+hx_mnemonic get_mnemonic(const char *string, u32 string_length)
 {
-	if (strcmp(string, "add") == 0) {
+	if (MATCH("add")) {
 		return HX_ADD;
-	} else if (strcmp(string, "sub") == 0) {
+	} else if (MATCH("sub")) {
 		return HX_SUB;
-	} else if (strcmp(string, "and") == 0) {
+	} else if (MATCH("and")) {
 		return HX_AND;
-	} else if (strcmp(string, "or") == 0) {
+	} else if (MATCH("or")) {
 		return HX_OR;
-	} else if (strcmp(string, "xor") == 0) {
+	} else if (MATCH("xor")) {
 		return HX_XOR;
-	} else if (strcmp(string, "sll") == 0) {
+	} else if (MATCH("sll")) {
 		return HX_SLL;
-	} else if (strcmp(string, "slr") == 0) {
+	} else if (MATCH("slr")) {
 		return HX_SLR;
-	} else if (strcmp(string, "sar") == 0) {
+	} else if (MATCH("sar")) {
 		return HX_SAR;
-	} else if (strcmp(string, "slt") == 0) {
+	} else if (MATCH("slt")) {
 		return HX_SLT;
-	} else if (strcmp(string, "sltu") == 0) {
+	} else if (MATCH("sltu")) {
 		return HX_SLTU;
-	} else if (strcmp(string, "addi") == 0) {
+	} else if (MATCH("addi")) {
 		return HX_ADDI;
-	} else if (strcmp(string, "andi") == 0) {
+	} else if (MATCH("andi")) {
 		return HX_ANDI;
-	} else if (strcmp(string, "ori") == 0) {
+	} else if (MATCH("ori")) {
 		return HX_ORI;
-	} else if (strcmp(string, "xori") == 0) {
+	} else if (MATCH("xori")) {
 		return HX_XORI;
-	} else if (strcmp(string, "slli") == 0) {
+	} else if (MATCH("slli")) {
 		return HX_SLLI;
-	} else if (strcmp(string, "slri") == 0) {
+	} else if (MATCH("slri")) {
 		return HX_SLRI;
-	} else if (strcmp(string, "sari") == 0) {
+	} else if (MATCH("sari")) {
 		return HX_SARI;
-	} else if (strcmp(string, "slti") == 0) {
+	} else if (MATCH("slti")) {
 		return HX_SLTI;
-	} else if (strcmp(string, "sltiu") == 0) {
+	} else if (MATCH("sltiu")) {
 		return HX_SLTUI;
-	} else if (strcmp(string, "sb") == 0) {
+	} else if (MATCH("sb")) {
 		return HX_SB;
-	} else if (strcmp(string, "sq") == 0) {
+	} else if (MATCH("sq")) {
 		return HX_SQ;
-	} else if (strcmp(string, "sh") == 0) {
+	} else if (MATCH("sh")) {
 		return HX_SH;
-	} else if (strcmp(string, "sw") == 0) {
+	} else if (MATCH("sw")) {
 		return HX_SW;
-	} else if (strcmp(string, "lb") == 0) {
+	} else if (MATCH("lb")) {
 		return HX_LB;
-	} else if (strcmp(string, "lq") == 0) {
+	} else if (MATCH("lq")) {
 		return HX_LQ;
-	} else if (strcmp(string, "lh") == 0) {
+	} else if (MATCH("lh")) {
 		return HX_LH;
-	} else if (strcmp(string, "lw") == 0) {
+	} else if (MATCH("lw")) {
 		return HX_LW;
-	} else if (strcmp(string, "lbu") == 0) {
+	} else if (MATCH("lbu")) {
 		return HX_LBU;
-	} else if (strcmp(string, "lqu") == 0) {
+	} else if (MATCH("lqu")) {
 		return HX_LQU;
-	} else if (strcmp(string, "lhu") == 0) {
+	} else if (MATCH("lhu")) {
 		return HX_LHU;
-	} else if (strcmp(string, "beq") == 0) {
+	} else if (MATCH("beq")) {
 		return HX_BEQ;
-	} else if (strcmp(string, "bne") == 0) {
+	} else if (MATCH("bne")) {
 		return HX_BNE;
-	} else if (strcmp(string, "blt") == 0) {
+	} else if (MATCH("blt")) {
 		return HX_BLT;
-	} else if (strcmp(string, "bge") == 0) {
+	} else if (MATCH("bge")) {
 		return HX_BGE;
-	} else if (strcmp(string, "jal") == 0) {
+	} else if (MATCH("jal")) {
 		return HX_JAL;
-	} else if (strcmp(string, "jral") == 0) {
+	} else if (MATCH("jral")) {
 		return HX_JRAL;
 	} 
 	/* Pseudo Instruction */
-	else if (strcmp(string, "nop") == 0) {
+	else if (MATCH("nop")) {
 		return HX_NOP;
-	} else if (strcmp(string, "mov") == 0) {
+	} else if (MATCH("mov")) {
 		return HX_MOV;
-	} else if (strcmp(string, "jmp") == 0) {
+	} else if (MATCH("jmp")) {
 		return HX_JMP;
 	}
 	return HX_MNEMONIC_UNKNOWN;

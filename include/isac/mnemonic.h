@@ -54,7 +54,7 @@ typedef enum {
 	HX_MNEMONIC_UNKNOWN
 } hx_mnemonic;
 
-HAPI hx_mnemonic get_mnemonic(const char *string);
+HAPI hx_mnemonic get_mnemonic(const char *string, u32 string_length);
 HAPI u8 get_opcode(hx_mnemonic mnemonic);
 HAPI u8 get_function(hx_mnemonic mnemonic);
 HAPI u8 get_modifier(hx_mnemonic mnemonic);
