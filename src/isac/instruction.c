@@ -7,6 +7,7 @@
 #include <stdarg.h>
 #include <stddef.h>
 #include <stdlib.h>
+#include <string.h>
 
 #define MAX_OPERANDS 3
 
@@ -36,7 +37,7 @@ struct hx_instruction {
 	hx_operand operands[MAX_OPERANDS];
 	u8 operand_count;
 
-	u32 line;
+	u64 line;
 };
 
 hx_instruction *instruction_create(hx_mnemonic mnemonic, u32 line, u32 operand_count, ...)
@@ -71,7 +72,7 @@ hx_instruction *instruction_create(hx_mnemonic mnemonic, u32 line, u32 operand_c
 	return instruction;
 }
 
-void instruiction_free(hx_instruction *instruction)
+void instruction_free(hx_instruction *instruction)
 {
 	for (u8 i = 0; i < instruction->operand_count; i++) {
 		operand_free(&instruction->operands[i]);
@@ -86,6 +87,11 @@ hx_mnemonic instruction_mnemonic(const hx_instruction *instruction)
 		return HX_MNEMONIC_UNKNOWN;
 	
 	return instruction->mnemonic;
+}
+
+u64 get_instruction_line(const hx_instruction *instruction)
+{
+	return instruction->line;
 }
 
 u8 instruction_operand_count(const hx_instruction *instruction)
@@ -105,6 +111,39 @@ u8 instruction_operand_count_of(const hx_instruction *instruction, hx_operand_ty
 	}
 
 	return count;
+}
+
+u8 instruction_get_symbol_name(const hx_instruction *instruction, const char **out_name, u32 *out_name_length)
+{
+	for (u8 i = 0; i < instruction->operand_count; i++) {
+		if (instruction->operands[i].type != HX_SYMBOL)
+			continue;
+
+		*out_name = instruction->operands[i].value.symbol.name;
+		*out_name_length = instruction->operands[i].value.symbol.name_length;
+		return true;
+	}
+
+	return false;
+}
+
+u8 instruction_resolve_symbol(hx_instruction *instruction, const char *name, u32 name_length, u64 address)
+{
+	for (u8 i = 0; i < instruction->operand_count; i++) {
+		if (instruction->operands[i].type != HX_SYMBOL)
+			continue;
+
+		if (instruction->operands[i].value.symbol.name_length != name_length)
+			continue;
+
+		if (strncmp(instruction->operands[i].value.symbol.name, name, name_length) == 0)
+			continue;
+
+		instruction->operands[i].value.symbol.address = address;
+		return success;
+	}
+
+	return false;
 }
 
 void *instruction_get_operand(const hx_instruction *instruction, u8 position, hx_operand_type type)
