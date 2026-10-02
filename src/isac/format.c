@@ -26,7 +26,7 @@ union operand {
 u32 format_r_encode(const hx_instruction *instruction)
 {
 	if (instruction == NULL)
-		return -1;
+		return 0;
 	
 	hx_mnemonic mnemonic = instruction_mnemonic(instruction);
 
@@ -38,7 +38,7 @@ u32 format_r_encode(const hx_instruction *instruction)
 		free(rd);
 		free(rs1);
 		free(rs2);
-		return -1;
+		return 0;
 	}
 
 	u32 encoded = get_opcode(mnemonic) |
@@ -65,7 +65,7 @@ u32 static encode_load(const hx_instruction *instruction)
 	if (rd == NULL || mem == NULL) {
 		free(rd);
 		free(mem);
-		return -1;
+		return 0;
 	}
 
 	u32 encoded = get_opcode(mnemonic) |
@@ -83,7 +83,7 @@ u32 static encode_load(const hx_instruction *instruction)
 u32 format_i_encode(const hx_instruction *instruction)
 {
 	if (instruction == NULL)
-		return -1;
+		return 0;
 	
 	hx_mnemonic mnemonic = instruction_mnemonic(instruction);
 
@@ -109,7 +109,7 @@ u32 format_i_encode(const hx_instruction *instruction)
 		free(rd);
 		free(rs1);
 		free(imm);
-		return -1;
+		return 0;
 	}
 
 	u32 encoded = get_opcode(mnemonic) |
@@ -128,7 +128,7 @@ u32 format_i_encode(const hx_instruction *instruction)
 u32 format_s_encode(const hx_instruction *instruction)
 {
 	if (instruction == NULL)
-		return -1;
+		return 0;
 	
 	hx_mnemonic mnemonic = instruction_mnemonic(instruction);
 
@@ -138,7 +138,7 @@ u32 format_s_encode(const hx_instruction *instruction)
 	if (mem == NULL || rs2 == NULL) {
 		free(mem);
 		free(rs2);
-		return -1;
+		return 0;
 	}
 
 	u32 encoded = get_opcode(mnemonic) |
@@ -156,7 +156,7 @@ u32 format_s_encode(const hx_instruction *instruction)
 u32 format_b_encode(const hx_instruction *instruction)
 {
 	if (instruction == NULL)
-		return -1;
+		return 0;
 	
 	hx_mnemonic mnemonic = instruction_mnemonic(instruction);
 
@@ -168,7 +168,7 @@ u32 format_b_encode(const hx_instruction *instruction)
 		free(rs2);
 		free(rs1);
 		free(symbol);
-		return -1;
+		return 0;
 	}
 
 	u32 encoded = get_opcode(mnemonic) |
@@ -187,7 +187,7 @@ u32 format_b_encode(const hx_instruction *instruction)
 u32 format_j_encode(const hx_instruction *instruction)
 {
 	if (instruction == NULL)
-		return -1;
+		return 0;
 	
 	hx_mnemonic mnemonic = instruction_mnemonic(instruction);
 
@@ -197,7 +197,7 @@ u32 format_j_encode(const hx_instruction *instruction)
 	if (rd == NULL || symbol == NULL) {
 		free(rd);
 		free(symbol);
-		return -1;
+		return 0;
 	}
 
 	u32 encoded = get_opcode(mnemonic) |
