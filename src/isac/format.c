@@ -42,11 +42,11 @@ u32 format_r_encode(const hx_instruction *instruction)
 	}
 
 	u32 encoded = get_opcode(mnemonic) |
-		((get_function(mnemonic) << 7) & 0x07) |
-		((rd->reg << 10) & 0x1F) |
-		((rs1->reg << 15) & 0x1F) |
-		((rs2->reg << 20) & 0x1F) |
-		((get_modifier(mnemonic) << 25) & 0x7F);
+		((get_function(mnemonic) & 0x07 ) << 7) |
+		((rd->reg & 0x1F) << 10) |
+		((rs1->reg & 0x1F) << 15) |
+		((rs2->reg & 0x1F) << 20) |
+		((get_modifier(mnemonic) & 0x7F) << 25);
 
 	free(rd);
 	free(rs1);
@@ -69,10 +69,10 @@ u32 static encode_load(const hx_instruction *instruction)
 	}
 
 	u32 encoded = get_opcode(mnemonic) |
-		((get_function(mnemonic) << 7) & 0x07) |
-		((rd->reg << 10) & 0x1F) |
-		((mem->memory.reg << 15) & 0x1F) |
-		((mem->memory.offset << 20) & 0x0FFF);
+		((get_function(mnemonic) & 0x07 ) << 7) |
+		((rd->reg & 0x1F) << 10) |
+		((mem->memory.reg & 0x1F) << 15) |
+		((mem->memory.offset & 0x0FFF) << 20);
 
 	free(rd);
 	free(mem);
@@ -113,10 +113,10 @@ u32 format_i_encode(const hx_instruction *instruction)
 	}
 
 	u32 encoded = get_opcode(mnemonic) |
-		((get_function(mnemonic) << 7) & 0x07) |
-		((rd->reg << 10) & 0x1F) |
-		((rs1->reg << 15) & 0x1F) |
-		((imm->reg << 20) & 0x0FFF);
+		((get_function(mnemonic) & 0x07 ) << 7) |
+		((rd->reg & 0x1F) << 10) |
+		((rs1->reg & 0x1F) << 15) |
+		((imm->reg & 0x0FFF) << 20);
 
 	free(rd);
 	free(rs1);
@@ -142,10 +142,10 @@ u32 format_s_encode(const hx_instruction *instruction)
 	}
 
 	u32 encoded = get_opcode(mnemonic) |
-		((get_function(mnemonic) << 7) & 0x07) |
-		((rs2->reg << 10) & 0x1F) |
-		((mem->memory.reg << 15) & 0x1F) |
-		((mem->memory.offset << 20) & 0x0FFF);
+		((get_function(mnemonic) & 0x07 ) << 7) |
+		((rs2->reg & 0x1F) << 10) |
+		((mem->memory.reg & 0x1F) << 15) |
+		((mem->memory.offset & 0x0FFF) << 20);
 
 	free(rs2);
 	free(rs2);
@@ -172,10 +172,10 @@ u32 format_b_encode(const hx_instruction *instruction)
 	}
 
 	u32 encoded = get_opcode(mnemonic) |
-		((get_function(mnemonic) << 7) & 0x07) |
-		((rs2->reg << 10) & 0x1F) |
-		((rs1->reg<< 15) & 0x1F) |
-		(((symbol->symbol.address >> 2) << 20) & 0x0FFF); // Divide by 4, store larger addresses
+		((get_function(mnemonic) & 0x07 ) << 7) |
+		((rs2->reg & 0x1F) << 10) |
+		((rs1->reg & 0x1F) << 15) |
+		(((symbol->symbol.address >> 2) & 0x0FFF) << 20); // Divide by 4, store larger addresses
 
 	free(rs2);
 	free(rs1);
@@ -201,9 +201,9 @@ u32 format_j_encode(const hx_instruction *instruction)
 	}
 
 	u32 encoded = get_opcode(mnemonic) |
-		((get_function(mnemonic) << 7) & 0x07) |
-		((rd->reg<< 10) & 0x1F) |
-		(((symbol->symbol.address >> 2) << 15) & 0x1FFFF); // Divide by 4, store larger addresses
+		((get_function(mnemonic) & 0x07 ) << 7) |
+		((rd->reg & 0x1F) << 10) |
+		(((symbol->symbol.address >> 2) & 0x1FFFF) << 15); // Divide by 4, store larger addresses
 
 	free(rd);
 	free(symbol);
