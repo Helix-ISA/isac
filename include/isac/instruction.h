@@ -7,7 +7,7 @@
 
 typedef struct hx_instruction hx_instruction;
 
-HAPI hx_instruction *instruction_create(hx_mnemonic mnemonic, u32 address, u32 operand_count, ...);
+HAPI hx_instruction *instruction_create(hx_mnemonic mnemonic, u64 address, u32 operand_count, ...);
 HAPI void instruction_free(hx_instruction *instruction);
 HAPI u64 get_instruction_address(const hx_instruction *instruction);
 
