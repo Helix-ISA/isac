@@ -113,7 +113,7 @@ u8 instruction_operand_count_of(const hx_instruction *instruction, hx_operand_ty
 	return count;
 }
 
-u8 instruction_get_symbol_name(const hx_instruction *instruction, const char **out_name, u32 *out_name_length)
+b8 instruction_operand_get_symbol(const hx_instruction *instruction, const char **out_name, u32 *out_name_length)
 {
 	for (u8 i = 0; i < instruction->operand_count; i++) {
 		if (instruction->operands[i].type != HX_SYMBOL)
@@ -127,23 +127,18 @@ u8 instruction_get_symbol_name(const hx_instruction *instruction, const char **o
 	return false;
 }
 
-u8 instruction_resolve_symbol(hx_instruction *instruction, const char *name, u32 name_length, u64 address)
+b8 instruction_operand_resolve_symbol(hx_instruction *instruction, u8 operand_position, u64 address)
 {
-	for (u8 i = 0; i < instruction->operand_count; i++) {
-		if (instruction->operands[i].type != HX_SYMBOL)
-			continue;
+	if (instruction->operands[operand_position].type != HX_SYMBOL)
+		return failure;
 
-		if (instruction->operands[i].value.symbol.name_length != name_length)
-			continue;
+	instruction->operands[operand_position].value.symbol.address = address;
+	return success;
+}
 
-		if (strncmp(instruction->operands[i].value.symbol.name, name, name_length) == 0)
-			continue;
-
-		instruction->operands[i].value.symbol.address = address;
-		return success;
-	}
-
-	return false;
+b8 instruction_operand_match_type(const hx_instruction *instruction, u8 operand_position, hx_operand_type type)
+{
+	return instruction->operands[operand_position].type == type;
 }
 
 void *instruction_get_operand(const hx_instruction *instruction, u8 position, hx_operand_type type)
