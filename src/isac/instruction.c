@@ -113,18 +113,16 @@ u8 instruction_operand_count_of(const hx_instruction *instruction, hx_operand_ty
 	return count;
 }
 
-b8 instruction_operand_get_symbol(const hx_instruction *instruction, const char **out_name, u32 *out_name_length)
+b8 instruction_operand_get_symbol(const hx_instruction *instruction, u32 operand_position, const char **out_name, u32 *out_name_length)
 {
-	for (u8 i = 0; i < instruction->operand_count; i++) {
-		if (instruction->operands[i].type != HX_SYMBOL)
-			continue;
+	if (instruction->operands[operand_position].type != HX_SYMBOL)
+		return false;
 
-		*out_name = instruction->operands[i].value.symbol.name;
-		*out_name_length = instruction->operands[i].value.symbol.name_length;
-		return true;
-	}
+	*out_name = instruction->operands[operand_position].value.symbol.name;
+	*out_name_length = instruction->operands[operand_position].value.symbol.name_length;
+	return true;
+	
 
-	return false;
 }
 
 b8 instruction_operand_resolve_symbol(hx_instruction *instruction, u8 operand_position, u64 address)
