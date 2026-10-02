@@ -116,7 +116,7 @@ u32 format_i_encode(const hx_instruction *instruction)
 		((get_function(mnemonic) & 0x07 ) << 7) |
 		((rd->reg & 0x1F) << 10) |
 		((rs1->reg & 0x1F) << 15) |
-		((imm->reg & 0x0FFF) << 20);
+		((imm->imm & 0x0FFF) << 20);
 
 	free(rd);
 	free(rs1);
