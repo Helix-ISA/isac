@@ -1,6 +1,6 @@
 pkgname=isac
 pkgver=0.1.0
-pkgrel=11
+pkgrel=12
 pkgdesc="ISA C headers"
 arch=('x86_64')
 license=('MIT')

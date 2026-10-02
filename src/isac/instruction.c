@@ -37,10 +37,10 @@ struct hx_instruction {
 	hx_operand operands[MAX_OPERANDS];
 	u8 operand_count;
 
-	u64 line;
+	u64 address;
 };
 
-hx_instruction *instruction_create(hx_mnemonic mnemonic, u32 line, u32 operand_count, ...)
+hx_instruction *instruction_create(hx_mnemonic mnemonic, u64 address, u32 operand_count, ...)
 {
 	hx_instruction *instruction = malloc(sizeof(hx_instruction));
 	if (instruction == NULL)
@@ -50,7 +50,7 @@ hx_instruction *instruction_create(hx_mnemonic mnemonic, u32 line, u32 operand_c
 		return failure;
 
 	instruction->mnemonic = mnemonic;
-	instruction->line = line;
+	instruction->address = address;
 	instruction->operand_count = operand_count;
 
 	va_list args;
@@ -89,9 +89,9 @@ hx_mnemonic instruction_mnemonic(const hx_instruction *instruction)
 	return instruction->mnemonic;
 }
 
-u64 get_instruction_line(const hx_instruction *instruction)
+u64 get_instruction_address(const hx_instruction *instruction)
 {
-	return instruction->line;
+	return instruction->address;
 }
 
 u8 instruction_operand_count(const hx_instruction *instruction)
