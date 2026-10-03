@@ -5,6 +5,7 @@
 #include "isac/operand.h"
 
 #include <stddef.h>
+#include <stdio.h>
 #include <stdlib.h>
 
 union operand {

@@ -187,6 +187,7 @@ void *instruction_get_operand(const hx_instruction *instruction, u8 position, hx
 		case HX_SYMBOL:
 			p->symbol.name = instruction->operands[position].value.symbol.name;
 			p->symbol.name_length = instruction->operands[position].value.symbol.name_length;
+			p->symbol.address = instruction->operands[position].value.symbol.address;
 			return p;
 
 		default:
