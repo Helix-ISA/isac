@@ -59,4 +59,6 @@ HAPI u8 get_opcode(hx_mnemonic mnemonic);
 HAPI u8 get_function(hx_mnemonic mnemonic);
 HAPI u8 get_modifier(hx_mnemonic mnemonic);
 
+hx_mnemonic decode_mnemonic(u8 opcode, u8 function, u8 mod);
+
 #endif

@@ -19,7 +19,6 @@ HAPI b8 instruction_operand_get_symbol(const hx_instruction *instruction, u32 op
 HAPI b8 instruction_operand_resolve_symbol(hx_instruction *instruction, u8 operand_position, u64 address);
 HAPI b8 instruction_operand_match_type(const hx_instruction *instruction, u8 operand_position, hx_operand_type type);
 
-void *instruction_get_operand(const hx_instruction *instruction, u8 position, hx_operand_type type);
-
+HAPI const hx_operand *instruction_get_operand(const hx_instruction *instruction, u8 position, hx_operand_type type);
 
 #endif

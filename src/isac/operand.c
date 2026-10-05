@@ -86,3 +86,28 @@ hx_operand_type operand_get_type(const hx_operand *operand)
 
 	return operand->type;
 }
+
+u8 operand_get_register(const hx_operand *operand)
+{
+	return operand->value.reg;
+}
+
+s64 operand_get_immediate(const hx_operand *operand)
+{
+	return operand->value.imm;
+}
+
+u8 operand_get_memory_register(const hx_operand *operand)
+{
+	return operand->value.memory.reg;
+}
+
+s64 operand_get_memory_offset(const hx_operand *operand)
+{
+	return operand->value.memory.offset;
+}
+
+s64 operand_get_symbol_address(const hx_operand *operand)
+{
+	return operand->value.symbol.address;
+}

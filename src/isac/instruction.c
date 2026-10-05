@@ -139,7 +139,7 @@ b8 instruction_operand_match_type(const hx_instruction *instruction, u8 operand_
 	return instruction->operands[operand_position].type == type;
 }
 
-void *instruction_get_operand(const hx_instruction *instruction, u8 position, hx_operand_type type)
+const hx_operand *instruction_get_operand(const hx_instruction *instruction, u8 position, hx_operand_type type)
 {
 	if (instruction == NULL)
 		return NULL;
@@ -150,47 +150,5 @@ void *instruction_get_operand(const hx_instruction *instruction, u8 position, hx
 	if (instruction->operands[position].type != type)
 		return NULL;
 
-	union out {
-		u8 reg;
-		u64 imm;
-
-		struct {
-			u8 reg;
-			u64 offset;
-		} memory;
-		
-		struct {
-			const char *name;
-			u32 name_length;
-			u64 address;
-		} symbol;
-	};
-
-	union out *p = malloc(sizeof(*p));
-	if (p == NULL)
-		return NULL;
-
-	switch (type) {
-		case HX_REGISTER:
-			p->reg = instruction->operands[position].value.reg;
-			return p;
-		
-		case HX_IMMEDIATE:
-			p->imm = instruction->operands[position].value.imm;
-			return p;
-
-		case HX_MEMORY:
-			p->memory.reg = instruction->operands[position].value.memory.reg;
-			p->memory.offset = instruction->operands[position].value.memory.offset;
-			return p;
-
-		case HX_SYMBOL:
-			p->symbol.name = instruction->operands[position].value.symbol.name;
-			p->symbol.name_length = instruction->operands[position].value.symbol.name_length;
-			p->symbol.address = instruction->operands[position].value.symbol.address;
-			return p;
-
-		default:
-			return NULL;
-	}
+	return &instruction->operands[position];
 }

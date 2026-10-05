@@ -11,5 +11,9 @@ HAPI u32 format_b_encode(const hx_instruction *instruction);
 HAPI u32 format_j_encode(const hx_instruction *instruction);
 
 HAPI hx_instruction *format_r_decode(const u32 encoding);
+HAPI hx_instruction *format_i_decode(const u32 encoding);
+HAPI hx_instruction *format_s_decode(const u32 encoding);
+HAPI hx_instruction *format_b_decode(const u32 encoding);
+HAPI hx_instruction *format_j_decode(const u32 encoding);
 
 #endif

@@ -244,3 +244,210 @@ u8 get_modifier(hx_mnemonic mnemonic)
 			return -1;
 	}
 }
+
+hx_mnemonic decode_mnemonic(u8 opcode, u8 function, u8 mod)
+{
+	u8 op = (opcode >> 2) & 0x1F;
+	switch (op) {
+		case 0x0:
+			switch (function) {
+				case 0x0:
+					if (mod == 0x40)
+						return HX_SUB;
+					else
+					 	return HX_ADD;
+					break;
+				case 0x1:
+					return HX_AND;
+					break;
+				case 0x2:
+					return HX_OR;
+					break;
+				case 0x3:
+					return HX_XOR;
+					break;
+				case 0x4:
+					return HX_SLL;
+					break;
+				case 0x5:
+					if (mod == 0x40)
+						return HX_SAR;
+					else
+					 	return HX_SLR;
+					break;
+				case 0x6:
+					return HX_SLT;
+					break;
+				case 0x7:
+					return HX_SLTU;
+					break;
+				default:
+					return HX_MNEMONIC_UNKNOWN;
+			}
+			break;
+		case 0x08:
+			switch (function) {
+				case 0x0:
+					return HX_ADDI;
+					break;
+				case 0x1:
+					return HX_ANDI;
+					break;
+				case 0x2:
+					return HX_ORI;
+					break;
+				case 0x3:
+					return HX_XORI;
+					break;
+				case 0x4:
+					return HX_SLLI;
+					break;
+				case 0x5:
+					if (mod == 0x20)
+						return HX_SARI;
+					else
+					 	return HX_SLRI;
+					break;
+				case 0x6:
+					return HX_SLTI;
+					break;
+				case 0x7:
+					return HX_SLTUI;
+					break;
+				default:
+					return HX_MNEMONIC_UNKNOWN;
+			}
+			break;
+		case 0x01:
+			switch (function) {
+				case 0x0:
+					return HX_SB;
+					break;
+				case 0x1:
+					return HX_SQ;
+					break;
+				case 0x2:
+					return HX_SH;
+					break;
+				case 0x3:
+					return HX_SW;
+					break;
+				case 0x4:
+					break;
+				case 0x5:
+					break;
+				case 0x6:
+					break;
+				case 0x7:
+					break;
+				default:
+					return HX_MNEMONIC_UNKNOWN;
+			}
+			break;
+		case 0x09:
+			switch (function) {
+				case 0x0:
+					return HX_LB;
+					break;
+				case 0x1:
+					return HX_LQ;
+					break;
+				case 0x2:
+					return HX_LH;
+					break;
+				case 0x3:
+					return HX_LW;
+					break;
+				case 0x4:
+					return HX_LBU;
+					break;
+				case 0x5:
+					return HX_LQU;
+					break;
+				case 0x6:
+					return HX_LHU;
+					break;
+				case 0x7:
+					break;
+				default:
+					return HX_MNEMONIC_UNKNOWN;
+			}
+			break;
+		case 0x02:
+			switch (function) {
+				case 0x0:
+					return HX_JAL;
+					break;
+				case 0x1:
+					break;
+				case 0x2:
+					break;
+				case 0x3:
+					break;
+				case 0x4:
+					break;
+				case 0x5:
+					break;
+				case 0x6:
+					break;
+				case 0x7:
+					break;
+				default:
+					return HX_MNEMONIC_UNKNOWN;
+			}
+			break;
+		case 0x10:
+			switch (function) {
+				case 0x0:
+					return HX_BEQ;
+					break;
+				case 0x1:
+					return HX_BNE;
+					break;
+				case 0x2:
+					return HX_BLT;
+					break;
+				case 0x3:
+					return HX_BGE;
+					break;
+				case 0x4:
+					break;
+				case 0x5:
+					break;
+				case 0x6:
+					break;
+				case 0x7:
+					break;
+				default:
+					return HX_MNEMONIC_UNKNOWN;
+			}
+			break;
+		case 0x0A:
+			switch (function) {
+				case 0x0:
+					return HX_JRAL;
+					break;
+				case 0x1:
+					break;
+				case 0x2:
+					break;
+				case 0x3:
+					break;
+				case 0x4:
+					break;
+				case 0x5:
+					break;
+				case 0x6:
+					break;
+				case 0x7:
+					break;
+				default:
+					return HX_MNEMONIC_UNKNOWN;
+			}
+			break;
+		default:
+			return HX_MNEMONIC_UNKNOWN;
+	}
+
+	return HX_MNEMONIC_UNKNOWN;
+}
