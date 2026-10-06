@@ -451,3 +451,58 @@ hx_mnemonic decode_mnemonic(u8 opcode, u8 function, u8 mod)
 
 	return HX_MNEMONIC_UNKNOWN;
 }
+
+const char *mnemonic_string(hx_mnemonic mnemonic)
+{
+	switch (mnemonic) {
+		case HX_ADD:  return "ADD";
+		case HX_SUB:  return "SUB";
+		case HX_AND:  return "AND";
+		case HX_OR:   return "OR";
+		case HX_XOR:  return "XOR";
+		case HX_SLL:  return "SLL";
+		case HX_SLR:  return "SLR";
+		case HX_SAR:  return "SAR";
+		case HX_SLT:  return "SLT";
+		case HX_SLTU: return "SLTU";
+
+		case HX_ADDI:  return "ADDI";
+		case HX_ANDI:  return "ANDI";
+		case HX_ORI:   return "ORI";
+		case HX_XORI:  return "XORI";
+		case HX_SLLI:  return "SLLI";
+		case HX_SLRI:  return "SLRI";
+		case HX_SARI:  return "SARI";
+		case HX_SLTI:  return "SLTI";
+		case HX_SLTUI: return "SLTUI";
+
+		case HX_SB: return "SB";
+		case HX_SQ: return "SQ";
+		case HX_SH: return "SH";
+		case HX_SW: return "SW";
+
+		case HX_LB:  return "LB";
+		case HX_LQ:  return "LQ";
+		case HX_LH:  return "LH";
+		case HX_LW:  return "LW";
+		case HX_LBU: return "LBU";
+		case HX_LQU: return "LQU";
+		case HX_LHU: return "LHU";
+
+		case HX_BEQ: return "BEQ";
+		case HX_BNE: return "BNE";
+		case HX_BLT: return "BLT";
+		case HX_BGE: return "BGE";
+
+		case HX_JAL:  return "JAL";
+		case HX_JRAL: return "JRAL";
+
+		case HX_NOP: return "NOP";
+		case HX_MOV: return "MOV";
+		case HX_JMP: return "JMP";
+
+		case HX_MNEMONIC_UNKNOWN:
+		default:
+			return "UNKNOWN";
+	}
+}
