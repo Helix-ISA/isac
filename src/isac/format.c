@@ -181,7 +181,7 @@ hx_instruction *format_i_decode(const u32 encoding)
 		);
 	} else {
 		s64 immediate = (s64)(encoding >> 20);
-		if (immediate & (1 < 11)) // If top bit is set signed
+		if (immediate & (1 << 11)) // If top bit is set signed
 			immediate |= ~0xFFFLL; // Sign extend with the not of the 12 lowest bits
 		return instruction_create(
 				mnemonic,
