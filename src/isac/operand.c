@@ -9,7 +9,7 @@ struct hx_operand {
 
 	union {
 		u8 reg;
-		u64 imm;
+		s64 imm;
 
 		struct {
 			u8 reg;
@@ -36,7 +36,7 @@ hx_operand *operand_create_register(u8 reg)
 	return operand;
 }
 
-hx_operand *operand_create_immediate(u64 imm)
+hx_operand *operand_create_immediate(s64 imm)
 {
 	hx_operand *operand = malloc(sizeof(hx_operand));
 	if (operand == NULL)
