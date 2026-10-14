@@ -5,6 +5,7 @@
 #include "isac/operand.h"
 
 #include <stddef.h>
+#include <stdio.h>
 #include <stdlib.h>
 
 u32 format_r_encode(const hx_instruction *instruction)
@@ -50,6 +51,8 @@ u32 format_i_encode(const hx_instruction *instruction)
 		return 0;
 	
 	hx_mnemonic mnemonic = instruction_mnemonic(instruction);
+
+	printf("%s: %d\n", mnemonic_string(mnemonic), get_function(mnemonic));
 
 	switch (mnemonic) {
 		case HX_LB:
@@ -138,7 +141,7 @@ u32 format_j_encode(const hx_instruction *instruction)
 static hx_mnemonic fetch_mnemonic(const u32 encoding)
 {
 	u8 opcode = encoding & 0x7F;
-	u8 function = (encoding >> 7) & 0x3;
+	u8 function = (encoding >> 7) & 0x7;
 	u8 mod = (encoding >> 25) & 0x7F;
 
 	return decode_mnemonic(opcode, function, mod);
